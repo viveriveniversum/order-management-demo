@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef } from 'ag-grid-community';
 import { themeMaterial } from 'ag-grid-community';
+import { DialogDataButton } from '../dialog/dialog.component';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { Order, OrderService } from '../../services/order.service';
 
@@ -40,7 +41,7 @@ export class OrderListComponent implements OnInit {
   public theme = themeMaterial;
 
   colDefs: ColDef<IRow>[] = [
-    { field: 'id', headerName: 'Order ID' },
+    { field: 'id', headerName: 'Order ID', cellRenderer: DialogDataButton },
     { field: 'customer', headerName: 'Customer' },
     {
       field: 'orderDate',
