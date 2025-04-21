@@ -21,10 +21,17 @@ app.get("/", (req, res) => {
 });
 
 // Error handler
-app.use((err: any, req: express.Request, res: express.Response) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Something went wrong!" });
-});
+app.use(
+  (
+    err: any,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.error(err.stack);
+    res.status(500).json({ message: "Something went wrong!" });
+  }
+);
 
 // Start server
 app.listen(PORT, () => {
