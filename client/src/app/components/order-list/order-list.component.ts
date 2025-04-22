@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef } from 'ag-grid-community';
 import { DialogDataButton } from '../dialog/dialog.component';
+import { AddDialogButton } from '../add-dialog-button/add-dialog-button.component';
 import { MatButtonModule } from '@angular/material/button';
-import { CellClassRules } from 'ag-grid-community';
 
 import {
   AllCommunityModule,
@@ -28,18 +28,17 @@ interface IRow {
 @Component({
   selector: 'app-order-list',
   standalone: true,
-  imports: [AgGridAngular, MatIcon, MatIconModule, MatButtonModule],
+  imports: [
+    AgGridAngular,
+    MatIcon,
+    MatIconModule,
+    MatButtonModule,
+    AddDialogButton,
+  ],
   template: `
-    <div
-      class="csv-button"
-      style="display: flex; align-items: center; justify-content: flex-end; margin-bottom: 10px;"
-    >
-      <button
-        mat-fab
-        extended
-        (click)="onBtnExport()"
-        style="margin-right: 10px;  border: 1px solid rgb(84, 120, 198); color: aliceblue; border-radius: 10px; background-color: rgb(84, 120, 198);"
-      >
+    <div class="button-container">
+      <add-dialog-button class="primary-button" />
+      <button mat-fab extended (click)="onBtnExport()" class="primary-button">
         <mat-icon fontIcon="download"></mat-icon>
         Export CSV
       </button>
