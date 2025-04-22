@@ -18,7 +18,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-profile-editor',
+  selector: 'dialog-form',
   templateUrl: 'dialog-form.component.html',
   standalone: true,
   imports: [
