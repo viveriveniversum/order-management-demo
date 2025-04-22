@@ -3,6 +3,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef } from 'ag-grid-community';
 import { DialogDataButton } from '../dialog/dialog.component';
 import { MatButtonModule } from '@angular/material/button';
+import { CellClassRules } from 'ag-grid-community';
 
 import {
   AllCommunityModule,
@@ -75,7 +76,14 @@ export class OrderListComponent implements OnInit {
         return new Date(params.value).toLocaleDateString();
       },
     },
-    { field: 'status', headerName: 'Status' },
+    {
+      field: 'status',
+      headerName: 'Status',
+      cellClassRules: {
+        'green-cell': (params) => params.value === 'delivered',
+        'red-cell': (params) => params.value === 'cancelled',
+      },
+    },
     {
       field: 'totalAmount',
       headerName: 'Total Amount',
