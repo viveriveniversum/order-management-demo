@@ -1,102 +1,65 @@
 import { Request, Response, NextFunction } from "express";
-import { orders } from "../data/orders";
-import { v4 as uuidv4 } from "uuid";
-import { Order, OrderItem } from "../models/order";
+import { dbService } from "../services/db.service";
 
-export const getAllOrders = (
+export const getAllOrders = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    const orders = await dbService.getAllOrders();
     res.json(orders);
   } catch (error) {
     next(error);
   }
 };
 
-export const getOrderById = (
+export const getOrderById = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
-    const order = orders.find((o) => o.id === req.params.id);
+    const orderId = req.params.id;
+
+    const order = await dbService.getOrderById(orderId);
 
     if (!order) {
       res.status(404).json({ message: "Order not found" });
-      return;
     }
 
     res.json(order);
   } catch (error) {
+    console.error("Error in getOrderById:", error);
     next(error);
   }
 };
 
-export const createOrder = (
+export const createOrder = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const orderData = req.body;
 
-    // Validate required fields - only customer is required
+    // Validate required fields
     if (!orderData.customer) {
-      res.status(400).json({
-        message: "Invalid order data. Customer is required.",
-      });
+      res.status(400).json({ message: "Customer is required" });
     }
 
-    let totalAmount = 0;
-    let processedItems: OrderItem[] = [];
-
-    // Process items if they exist
-    if (
-      orderData.items &&
-      Array.isArray(orderData.items) &&
-      orderData.items.length > 0
-    ) {
-      processedItems = orderData.items.map((item: any) => {
-        const subtotal = item.price * item.quantity;
-        totalAmount += subtotal;
-
-        return {
-          id: uuidv4(),
-          productName: item.productName,
-          quantity: item.quantity,
-          price: item.price,
-          subtotal: subtotal,
-        };
-      });
+    // status if not provided
+    if (!orderData.status) {
+      orderData.status = "pending";
     }
 
-    const finalTotalAmount = orderData.totalAmount || totalAmount;
+    if (!orderData.orderDate) {
+      orderData.orderDate = new Date().toISOString();
+    }
 
-    // unique identifier for the order
-    const orderPrefix = "ORD-";
-    const highestOrderNum = orders
-      .map((order) => {
-        const match = order.id.match(/^ORD-(\d+)$/);
-        return match ? parseInt(match[1], 10) : 0;
-      })
-      .reduce((max, num) => Math.max(max, num), 0);
+    const newOrder = await dbService.createOrder(orderData);
 
-    const newOrderNum = highestOrderNum + 1;
-    const paddedOrderNum = String(newOrderNum).padStart(4, "0");
-
-    const newOrder: Order = {
-      id: `${orderPrefix}${paddedOrderNum}`,
-      customer: orderData.customer,
-      orderDate: orderData.orderDate || new Date().toISOString(),
-      status: orderData.status || "pending",
-      items: processedItems.length > 0 ? processedItems : null,
-      totalAmount: parseFloat(finalTotalAmount.toFixed(2)),
-    };
-
-    // Add to our data store
-    orders.push(newOrder);
+    res.status(201).json(newOrder);
   } catch (error) {
     next(error);
   }
