@@ -16,6 +16,7 @@ import {
 } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
+import { OrderService } from '../../services/order.service';
 
 @Component({
   selector: 'dialog-form',
@@ -35,6 +36,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class DialogForm {
   private formBuilder = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<DialogForm>);
+  private orderService = inject(OrderService);
 
   profileForm = this.formBuilder.group({
     customer: ['', Validators.required],
@@ -89,7 +91,8 @@ export class DialogForm {
     }
 
     const orderData = {
-      customer: this.profileForm.get('customer')?.value,
+      id: '',
+      customer: this.profileForm.get('customer')?.value || '',
       status: 'pending',
       orderDate: new Date().toISOString(),
       items: this.items.controls.map((item: any) => {
@@ -98,6 +101,7 @@ export class DialogForm {
         const quantity = group.get('quantity')?.value || 0;
 
         return {
+          id: '',
           productName: group.get('productName')?.value,
           price: price,
           quantity: quantity,
@@ -107,7 +111,16 @@ export class DialogForm {
       totalAmount: this.calculateTotal(),
     };
 
+    this.orderService.createOrder(orderData).subscribe({
+      next: (response) => {
+        console.log('Order created successfully:', response);
+        this.dialogRef.close(orderData);
+      },
+      error: (error) => {
+        console.error('Error creating order:', error);
+      },
+    });
+
     console.log('Order data:', orderData);
-    this.dialogRef.close(orderData);
   }
 }
