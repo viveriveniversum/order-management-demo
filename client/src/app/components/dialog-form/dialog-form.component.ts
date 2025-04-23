@@ -30,7 +30,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule,
     ReactiveFormsModule,
   ],
-  styleUrl: './dialog-form.component.css',
+  styleUrls: ['./dialog-form.component.css'],
 })
 export class DialogForm {
   private formBuilder = inject(FormBuilder);
