@@ -13,4 +13,5 @@ export interface OrderItem {
   quantity: number;
   price: number;
   subtotal: number;
+  orderId?: string;
 }
