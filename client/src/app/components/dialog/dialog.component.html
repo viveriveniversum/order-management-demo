@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Order Details: {{data.order.id}}</h2>
+
+<mat-dialog-content>
+    <div style="margin-bottom: 20px">
+        <div><strong>Customer:</strong> {{data.order.customer}}</div>
+        <div><strong>Date:</strong> {{data.order.orderDate}}</div>
+        <div><strong>Status:</strong> {{data.order.status}}</div>
+        <div><strong>Total Amount:</strong> €{{data.order.totalAmount.toFixed(2)}}</div>
+    </div>
+
+    <h3>Order Items</h3>
+    <table mat-table [dataSource]="data.order.items" class="mat-elevation-z8">
+        <ng-container matColumnDef="product">
+            <th mat-header-cell *matHeaderCellDef>Product</th>
+            <td mat-cell *matCellDef="let item">{{item.productName}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef>Quantity</th>
+            <td mat-cell *matCellDef="let item">{{item.quantity}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef>Price</th>
+            <td mat-cell *matCellDef="let item">€{{item.price.toFixed(2)}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['product', 'quantity', 'price']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['product', 'quantity', 'price']"></tr>
+    </table>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close
+        style="margin-right: 10px; border: 1px solid rgb(84, 120, 198); color: aliceblue; border-radius: 10px; background-color: rgb(84, 120, 198);">Annuleren</button>
+</mat-dialog-actions>
