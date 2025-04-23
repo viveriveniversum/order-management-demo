@@ -1,0 +1,76 @@
+<h2 mat-dialog-title>Add New Order Reactive Form</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="profileForm">
+    <div class="form-field">
+      <label for="customer">Customer Name: </label>
+      <input id="customer" type="text" formControlName="customer" />
+      @if (customer.invalid && (customer.dirty || customer.touched)) {
+      <div class="alert error">
+        <div>Name is required.</div>
+      </div>
+      }
+
+      <div formArrayName="items">
+        <h2>Items</h2>
+        @for(item of items.controls; track $index; let i = $index) {
+        <div [formGroupName]="i" class="item-container">
+          <h4>Item {{ i + 1 }}</h4>
+          <div class="form-field">
+            <label for="productName-{{i}}">Item Name: </label>
+            <input id="productName-{{i}}" type="text" formControlName="productName" />
+            @if (getItemControl(i, 'productName').invalid &&
+            (getItemControl(i, 'productName').dirty || getItemControl(i, 'productName').touched)) {
+            <div class="alert error">
+              <div>Product name is required.</div>
+            </div>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="price-{{i}}">Price: </label>
+            <input id="price-{{i}}" type="number" formControlName="price" />
+            @if (getItemControl(i, 'price').invalid &&
+            (getItemControl(i, 'price').dirty || getItemControl(i, 'price').touched)) {
+            <div class="alert error">
+              <div>
+                @if (getItemControl(i, 'price').errors?.['required']) {
+                Price is required.
+                } @else if (getItemControl(i, 'price').errors?.['min']) {
+                Price must be at least 0.01.
+                }
+              </div>
+            </div>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="quantity-{{i}}">Quantity: </label>
+            <input id="quantity-{{i}}" type="number" formControlName="quantity" />
+            @if (getItemControl(i, 'quantity').invalid &&
+            (getItemControl(i, 'quantity').dirty || getItemControl(i, 'quantity').touched)) {
+            <div class="alert error">
+              <div>
+                @if (getItemControl(i, 'quantity').errors?.['required']) {
+                Quantity is required.
+                } @else if (getItemControl(i, 'quantity').errors?.['min']) {
+                Quantity must be at least 1.
+                }
+              </div>
+            </div>
+            }
+          </div>
+
+          <button type="button" mat-stroked-button (click)="removeItem(i)">Remove</button>
+        </div>
+        }
+        <button type="button" mat-stroked-button (click)="addItem()">+ Add another item</button>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-dialog-close mat-raised-button>Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="profileForm.invalid">Save Order</button>
+</mat-dialog-actions>
