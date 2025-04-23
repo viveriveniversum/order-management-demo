@@ -37,7 +37,7 @@ interface IRow {
   ],
   template: `
     <div class="button-container">
-      <add-dialog-button class="primary-button" />
+      <add-dialog-button (orderAdded)="loadOrders()" class="primary-button" />
       <button mat-fab extended (click)="onBtnExport()" class="primary-button">
         <mat-icon fontIcon="download"></mat-icon>
         Export CSV
