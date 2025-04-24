@@ -79,7 +79,13 @@ export class OrderListComponent implements OnInit {
   supabase = inject(SupabaseService);
 
   colDefs: ColDef<IRow>[] = [
-    { field: 'id', headerName: 'Order ID', cellRenderer: DialogDataButton },
+    {
+      field: 'id',
+      headerName: 'Order ID',
+      cellRenderer: DialogDataButton,
+      minWidth: 320,
+      flex: 3,
+    },
     { field: 'customer', headerName: 'Customer' },
     {
       field: 'orderDate',
