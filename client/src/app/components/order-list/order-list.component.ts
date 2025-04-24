@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef } from 'ag-grid-community';
 import { DialogDataButton } from '../dialog/dialog.component';
@@ -15,6 +15,8 @@ import {
 } from 'ag-grid-community';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { Order, OrderService } from '../../services/order.service';
+import { SupabaseService } from '../../services/supabase.service';
+import { AsyncPipe } from '@angular/common';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -36,11 +38,14 @@ interface IRow {
     MatButtonModule,
     AddOrderButton,
     LoginButton,
+    AsyncPipe,
   ],
   template: `
     <div class="button-container">
       <login-button />
-      <add-order-button (orderAdded)="loadOrders()" />
+      @if (supabase.user$ | async) {
+      <add-order-button (orderAdded)="loadOrders()" class="primary-button" />
+      }
       <button mat-fab extended (click)="onBtnExport()">
         <mat-icon fontIcon="download"></mat-icon>
         Export CSV
@@ -66,6 +71,7 @@ export class OrderListComponent implements OnInit {
   error = '';
   public theme = themeMaterial;
   private gridApi!: GridApi;
+  supabase = inject(SupabaseService);
 
   colDefs: ColDef<IRow>[] = [
     { field: 'id', headerName: 'Order ID', cellRenderer: DialogDataButton },
