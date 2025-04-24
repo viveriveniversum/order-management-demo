@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef } from 'ag-grid-community';
 import { DialogDataButton } from '../dialog/dialog.component';
-import { AddDialogButton } from '../add-dialog-button/add-dialog-button.component';
+import { AddOrderButton } from '../add-order-button/add-order-button.component';
 import { MatButtonModule } from '@angular/material/button';
 
 import {
@@ -33,11 +33,11 @@ interface IRow {
     MatIcon,
     MatIconModule,
     MatButtonModule,
-    AddDialogButton,
+    AddOrderButton,
   ],
   template: `
     <div class="button-container">
-      <add-dialog-button (orderAdded)="loadOrders()" class="primary-button" />
+      <add-order-button (orderAdded)="loadOrders()" class="primary-button" />
       <button mat-fab extended (click)="onBtnExport()" class="primary-button">
         <mat-icon fontIcon="download"></mat-icon>
         Export CSV
