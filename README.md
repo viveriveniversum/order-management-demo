@@ -114,8 +114,13 @@ De applicatie gebruikt Supabase's magic link authenticatie:
 - **Orders bekijken**: Alle orders worden weergegeven in het hoofdrooster
 - **Filteren/Sorteren**: Klik op kolomkoppen of gebruik de filterpictogrammen
 - **Details bekijken**: Klik op het pictogram in de Order ID kolom
+  ![grid-features](./assets/grid-steps.gif)
+
 - **Order toevoegen**: (Alleen geauthenticeerde gebruikers) Klik op de "Order toevoegen" knop
+  ![add-order](./assets/add-order.gif)
+
 - **Gegevens exporteren**: Klik op de "Exporteer CSV" knop
+  ![export-csv](./assets/export-csv.gif)
 
 ## 🧩 API Endpoints
 
