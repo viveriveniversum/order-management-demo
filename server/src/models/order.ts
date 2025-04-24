@@ -1,5 +1,5 @@
 export interface Order {
-  id: string;
+  id?: string;
   customer: string;
   orderDate: string;
   status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
@@ -8,9 +8,10 @@ export interface Order {
 }
 
 export interface OrderItem {
-  id: string;
+  id?: string;
   productName: string;
   quantity: number;
   price: number;
   subtotal: number;
+  orderId?: string;
 }
