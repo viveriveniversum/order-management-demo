@@ -10,14 +10,14 @@ import { AsyncPipe } from '@angular/common';
   selector: 'login-button',
   template: `<div class="auth-container">
     @if ((supabase.user$ | async) === null) {
-    <button mat-raised-button color="primary" (click)="openDialog()">
+    <button mat-fab extended (click)="openDialog()">
       <mat-icon>login</mat-icon>
       Login
     </button>
     } @else {
     <div class="user-info">
       <span class="user-email">{{ supabase.getUserEmail() }}</span>
-      <button mat-raised-button color="warn" (click)="logout()">
+      <button mat-fab extended (click)="logout()">
         <mat-icon>logout</mat-icon>
         Logout
       </button>
