@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef } from 'ag-grid-community';
 import { DialogDataButton } from '../dialog/dialog.component';
 import { AddOrderButton } from '../add-order-button/add-order-button.component';
 import { MatButtonModule } from '@angular/material/button';
+import { LoginButton } from '../login-button/login-button.component';
 
 import {
   AllCommunityModule,
@@ -14,6 +15,8 @@ import {
 } from 'ag-grid-community';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { Order, OrderService } from '../../services/order.service';
+import { SupabaseService } from '../../services/supabase.service';
+import { AsyncPipe } from '@angular/common';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -34,14 +37,24 @@ interface IRow {
     MatIconModule,
     MatButtonModule,
     AddOrderButton,
+    LoginButton,
+    AsyncPipe,
   ],
   template: `
     <div class="button-container">
-      <add-order-button (orderAdded)="loadOrders()" class="primary-button" />
-      <button mat-fab extended (click)="onBtnExport()" class="primary-button">
-        <mat-icon fontIcon="download"></mat-icon>
-        Export CSV
-      </button>
+      <div class="button-login">
+        <login-button />
+      </div>
+
+      <div class="button-actions">
+        @if (supabase.user$ | async) {
+        <add-order-button (orderAdded)="loadOrders()" class="primary-button" />
+        }
+        <button mat-fab extended (click)="onBtnExport()">
+          <mat-icon fontIcon="download"></mat-icon>
+          Export CSV
+        </button>
+      </div>
     </div>
     <ag-grid-angular
       [theme]="theme"
@@ -63,9 +76,16 @@ export class OrderListComponent implements OnInit {
   error = '';
   public theme = themeMaterial;
   private gridApi!: GridApi;
+  supabase = inject(SupabaseService);
 
   colDefs: ColDef<IRow>[] = [
-    { field: 'id', headerName: 'Order ID', cellRenderer: DialogDataButton },
+    {
+      field: 'id',
+      headerName: 'Order ID',
+      cellRenderer: DialogDataButton,
+      minWidth: 320,
+      flex: 3,
+    },
     { field: 'customer', headerName: 'Customer' },
     {
       field: 'orderDate',

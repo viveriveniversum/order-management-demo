@@ -19,14 +19,18 @@ body {
 
 .button-container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   gap: 10px;
 }
 
-.primary-button {
-  color: aliceblue;
-  border-radius: 10px;
+.button-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  gap: 10px;
 }
