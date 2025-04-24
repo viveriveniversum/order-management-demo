@@ -27,8 +27,8 @@ export class SupabaseService {
 
   constructor(private ngZone: NgZone) {
     this.supabase = createClient(
-      environment.supabaseUrl,
-      environment.supabaseKey
+      environment.SUPABASE_URL,
+      environment.SUPABASE_KEY
     );
     this.loadSession();
 
