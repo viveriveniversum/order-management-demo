@@ -42,14 +42,19 @@ interface IRow {
   ],
   template: `
     <div class="button-container">
-      <login-button />
-      @if (supabase.user$ | async) {
-      <add-order-button (orderAdded)="loadOrders()" class="primary-button" />
-      }
-      <button mat-fab extended (click)="onBtnExport()">
-        <mat-icon fontIcon="download"></mat-icon>
-        Export CSV
-      </button>
+      <div class="button-login">
+        <login-button />
+      </div>
+
+      <div class="button-actions">
+        @if (supabase.user$ | async) {
+        <add-order-button (orderAdded)="loadOrders()" class="primary-button" />
+        }
+        <button mat-fab extended (click)="onBtnExport()">
+          <mat-icon fontIcon="download"></mat-icon>
+          Export CSV
+        </button>
+      </div>
     </div>
     <ag-grid-angular
       [theme]="theme"

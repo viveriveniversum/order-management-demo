@@ -16,11 +16,11 @@ import { AsyncPipe } from '@angular/common';
     </button>
     } @else {
     <div class="user-info">
-      <span class="user-email">{{ supabase.getUserEmail() }}</span>
       <button mat-fab extended (click)="logout()">
         <mat-icon>logout</mat-icon>
         Logout
       </button>
+      <span class="user-email">{{ supabase.getUserEmail() }}</span>
     </div>
     }
   </div>`,
