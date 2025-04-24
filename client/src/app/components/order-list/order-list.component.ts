@@ -4,6 +4,7 @@ import type { ColDef } from 'ag-grid-community';
 import { DialogDataButton } from '../dialog/dialog.component';
 import { AddOrderButton } from '../add-order-button/add-order-button.component';
 import { MatButtonModule } from '@angular/material/button';
+import { LoginButton } from '../login-button/login-button.component';
 
 import {
   AllCommunityModule,
@@ -34,9 +35,11 @@ interface IRow {
     MatIconModule,
     MatButtonModule,
     AddOrderButton,
+    LoginButton,
   ],
   template: `
     <div class="button-container">
+      <login-button class="primary-button" />
       <add-order-button (orderAdded)="loadOrders()" class="primary-button" />
       <button mat-fab extended (click)="onBtnExport()" class="primary-button">
         <mat-icon fontIcon="download"></mat-icon>
